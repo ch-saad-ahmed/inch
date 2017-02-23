@@ -1,0 +1,46 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             asm_func, CODE, READONLY
+    2 00000000         ; Export my_asm function location so that C compiler can
+                        find it and link
+    3 00000000                 EXPORT           set_R0
+    4 00000000         set_R0
+    5 00000000 F8CD 0001       STR              R0,[sp,#1]
+    6 00000004 4770            BX               LR
+    7 00000006                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=stm32l152re_nucleo\set_r.d -ostm32l152re_nucleo\set_r.o -I"C:\User
+s\Furqan Arshad\Desktop\thesis\STM32Cube_FW_L1_V1.6.0\Projects\STM32L152RE-Nucl
+eo\Examples_MIX\UART\UART_HyperTerminal_IT\MDK-ARM\RTE" -IC:\Keil_v5\ARM\PACK\A
+RM\CMSIS\5.0.0-Beta4\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L1xx_DFP\1.0
+.2\Device\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" -
+-predefine="__UVISION_VERSION SETA 521" --predefine="_RTE_ SETA 1" --predefine=
+"STM32L1XX_XL SETA 1" --list=set_r.lst set_R.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_func 00000000
+
+Symbol: asm_func
+   Definitions
+      At line 1 in file set_R.s
+   Uses
+      None
+Comment: asm_func unused
+set_R0 00000000
+
+Symbol: set_R0
+   Definitions
+      At line 4 in file set_R.s
+   Uses
+      At line 3 in file set_R.s
+Comment: set_R0 used once
+2 symbols
+337 symbols in table

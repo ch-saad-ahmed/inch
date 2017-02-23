@@ -1,0 +1,87 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             asm_func, CODE, READONLY
+    2 00000000         ; Export my_asm function location so that C compiler can
+                        find it and link
+    3 00000000                 EXPORT           general_purpose
+    4 00000000         general_purpose
+    5 00000000         
+    6 00000000 480F            LDR              R0,=0x08054000
+    7 00000002 6801            LDR              R1,[R0]
+    8 00000004 480F            LDR              R0,=0x08054004
+    9 00000006 6801            LDR              R1,[R0]
+   10 00000008 480F            LDR              R0,=0x08054008
+   11 0000000A 6802            LDR              R2,[R0]
+   12 0000000C 480F            LDR              R0,=0x0805400C
+   13 0000000E 6803            LDR              R3,[R0]
+   14 00000010 480F            LDR              R0,=0x08054010
+   15 00000012 6804            LDR              R4,[R0]
+   16 00000014 480F            LDR              R0,=0x08054014
+   17 00000016 6805            LDR              R5,[R0]
+   18 00000018 480F            LDR              R0,=0x08054018
+   19 0000001A 6806            LDR              R6,[R0]
+   20 0000001C         
+   21 0000001C 480F            LDR              R0,=0x0805401C
+   22 0000001E 6807            LDR              R7,[R0]
+   23 00000020 480F            LDR              R0,=0x08054020
+   24 00000022 F8D0 8000       LDR              R8,[R0]
+   25 00000026 480F            LDR              R0,=0x08054024
+   26 00000028 F8D0 9000       LDR              R9,[R0]
+   27 0000002C 480E            LDR              R0,=0x08054028
+   28 0000002E F8D0 A000       LDR              R10,[R0]
+   29 00000032         
+   30 00000032 480E            LDR              R0,=0x0805402C
+   31 00000034 F8D0 B000       LDR              R11,[R0]
+   32 00000038 480D            LDR              R0,=0x08054030
+   33 0000003A F8D0 C000       LDR              R12,[R0]
+   34 0000003E 4770            BX               LR
+   35 00000040                 END
+              08054000 
+              08054004 
+              08054008 
+              0805400C 
+              08054010 
+              08054014 
+              08054018 
+              0805401C 
+              08054020 
+              08054024 
+              08054028 
+              0805402C 
+              08054030 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=stm32l152re_nucleo\r0_r12.d -ostm32l152re_nucleo\r0_r12.o -I"C:\Ke
+il_v5\Eg\en.stm32cubel1\STM32Cube_FW_L1_V1.6.0\Projects\STM32L152RE-Nucleo\Exam
+ples_MIX\UART\UART_HyperTerminal_IT Add MEMMAP FFT1\MDK-ARM\RTE" -IC:\Keil_v5\A
+RM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L1
+xx_DFP\1.2.0\Device\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB
+ SETA 1" --predefine="__UVISION_VERSION SETA 521" --predefine="_RTE_ SETA 1" --
+predefine="STM32L152xE SETA 1" --list=r0_r12.lst r0_r12.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_func 00000000
+
+Symbol: asm_func
+   Definitions
+      At line 1 in file r0_r12.s
+   Uses
+      None
+Comment: asm_func unused
+general_purpose 00000000
+
+Symbol: general_purpose
+   Definitions
+      At line 4 in file r0_r12.s
+   Uses
+      At line 3 in file r0_r12.s
+Comment: general_purpose used once
+2 symbols
+339 symbols in table

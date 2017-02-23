@@ -1,0 +1,49 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             asm_func, CODE, READONLY
+    2 00000000         ; Export my_asm function location so that C compiler can
+                        find it and link
+    3 00000000         
+    4 00000000                 EXPORT           get_R4
+    5 00000000         
+    6 00000000         
+    7 00000000         get_R4
+    8 00000000 4620            MOV              R0,R4
+    9 00000002 4770            BX               LR
+   10 00000004                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=stm32l152re_nucleo\r4.d -ostm32l152re_nucleo\r4.o -I"C:\Keil_v5\Eg
+\en.stm32cubel1\STM32Cube_FW_L1_V1.6.0\Projects\STM32L152RE-Nucleo\Examples_MIX
+\UART\UART_HyperTerminal_IT Add MEMMAP FFT1\MDK-ARM\RTE" -IC:\Keil_v5\ARM\PACK\
+ARM\CMSIS\5.0.0-Beta12\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L1xx_DFP\1
+.2.0\Device\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1"
+ --predefine="__UVISION_VERSION SETA 521" --predefine="_RTE_ SETA 1" --predefin
+e="STM32L152xE SETA 1" --list=r4.lst r4.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_func 00000000
+
+Symbol: asm_func
+   Definitions
+      At line 1 in file r4.s
+   Uses
+      None
+Comment: asm_func unused
+get_R4 00000000
+
+Symbol: get_R4
+   Definitions
+      At line 7 in file r4.s
+   Uses
+      At line 4 in file r4.s
+Comment: get_R4 used once
+2 symbols
+337 symbols in table

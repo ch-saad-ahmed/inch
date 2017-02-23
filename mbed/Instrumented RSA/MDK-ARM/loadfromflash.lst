@@ -1,0 +1,98 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             asm_func, CODE, READONLY
+    2 00000000         ; Export my_asm function location so that C compiler can
+                        find it and link
+    3 00000000                 EXPORT           asm_setregisters
+    4 00000000         asm_setregisters
+    5 00000000         
+    6 00000000         ;LDR  R0,=0x08054000
+    7 00000000         ;LDR  R1,[R0]
+    8 00000000         ;LDR  R0,=0x08054004
+    9 00000000         ;LDR  R2,[R0]
+   10 00000000         ;LDR  R0,=0x08054008
+   11 00000000         ;LDR  R2,[R0]
+   12 00000000         ;LDR  R0,=0x0805400C
+   13 00000000         ;LDR  R3,[R0]
+   14 00000000         ;LDR  R0,=0x08054010
+   15 00000000         ;LDR  R4,[R0]
+   16 00000000         ;LDR  R0,=0x08054014
+   17 00000000         ;LDR  R5,[R0]
+   18 00000000         ;LDR  R0,=0x08054018
+   19 00000000         ;LDR  R6,[R0]
+   20 00000000         
+   21 00000000         ;LDR  R0,=0x0805401C
+   22 00000000         ;LDR  R7,[R0]
+   23 00000000         ;LDR  R0,=0x08054020
+   24 00000000         ;LDR  R8,[R0]
+   25 00000000         ;LDR  R0,=0x08054024
+   26 00000000         ;LDR  R9,[R0]
+   27 00000000         ;LDR  R0,=0x08054028
+   28 00000000         ;LDR  R10,[R0]
+   29 00000000         
+   30 00000000         ;LDR  R0,=0x0805402C
+   31 00000000         ;LDR  R11,[R0]
+   32 00000000         ;LDR  R0,=0x08054030
+   33 00000000         ; LDR  R12,[R0]
+   34 00000000 4805            LDR              R0,=0x08054034
+   35 00000002 F8D0 D000       LDR              sp,[R0]
+   36 00000006 4805            LDR              R0,=0x08054010
+   37 00000008 6804            LDR              R4,[R0]
+   38 0000000A 4805            LDR              R0,=0x08054038
+   39 0000000C F8D0 E000       LDR              lr,[R0]
+   40 00000010         
+   41 00000010         
+   42 00000010 4804            LDR              R0,=0x0805403C
+   43 00000012 6801            LDR              R1,[R0]     ;=0x08001FAA
+   44 00000014 468F            MOV              pc,R1       ;[R0]
+   45 00000016         
+   46 00000016         
+   47 00000016 4770            BX               LR
+   48 00000018                 END
+              08054034 
+              08054010 
+              08054038 
+              0805403C 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=stm32l152re_nucleo\loadfromflash.d -ostm32l152re_nucleo\loadfromfl
+ash.o -I"C:\Keil_v5\Eg\en.stm32cubel1\STM32Cube_FW_L1_V1.6.0\Projects\STM32L152
+RE-Nucleo\Examples_MIX\UART\UART_HyperTerminal_IT Add MEMMAP FFT1\MDK-ARM\RTE" 
+-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include -IC:\Keil_v5\ARM\PAC
+K\Keil\STM32L1xx_DFP\1.2.0\Device\Include --predefine="__EVAL SETA 1" --predefi
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+ne="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 521" --predefine="_R
+TE_ SETA 1" --predefine="STM32L152xE SETA 1" --list=loadfromflash.lst loadfromf
+lash.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_func 00000000
+
+Symbol: asm_func
+   Definitions
+      At line 1 in file loadfromflash.s
+   Uses
+      None
+Comment: asm_func unused
+asm_setregisters 00000000
+
+Symbol: asm_setregisters
+   Definitions
+      At line 4 in file loadfromflash.s
+   Uses
+      At line 3 in file loadfromflash.s
+Comment: asm_setregisters used once
+2 symbols
+339 symbols in table

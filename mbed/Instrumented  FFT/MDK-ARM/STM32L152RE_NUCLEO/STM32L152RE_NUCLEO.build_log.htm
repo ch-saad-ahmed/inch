@@ -1,0 +1,171 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.21.1.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Ans anasf, LUMS, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.21a
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 3 (build 300)
+Assembler:       Armasm.exe V5.06 update 3 (build 300)
+Linker/Locator:  ArmLink.exe V5.06 update 3 (build 300)
+Library Manager: ArmAr.exe V5.06 update 3 (build 300)
+Hex Converter:   FromElf.exe V5.06 update 3 (build 300)
+CPU DLL:         SARMCM3.DLL V5.21a
+Dialog DLL:      DCM.DLL V1.13.8.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Dialog DLL:      TCM.DLL V1.14.14.0
+ 
+<h2>Project:</h2>
+C:\Keil_v5\Eg\en.stm32cubel1\STM32Cube_FW_L1_V1.6.0\Projects\STM32L152RE-Nucleo\Examples_MIX\UART\Instrumented  FFT\MDK-ARM\Project.uvprojx
+Project File Date:  01/10/2017
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'STM32L152RE_NUCLEO'
+compiling main.c...
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8936): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_IACCVIOL_Pos" (declared at line 573 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_IACCVIOL_Pos               (0U)                               
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8958): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_IMPRECISERR_Pos" (declared at line 586 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_IMPRECISERR_Pos            (10U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8959): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_IMPRECISERR_Msk" (declared at line 587 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_IMPRECISERR_Msk            (0x1U << SCB_CFSR_IMPRECISERR_Pos) /*!< 0x00000400 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8961): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_UNSTKERR_Pos" (declared at line 583 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_UNSTKERR_Pos               (11U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8962): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_UNSTKERR_Msk" (declared at line 584 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_UNSTKERR_Msk               (0x1U << SCB_CFSR_UNSTKERR_Pos)    /*!< 0x00000800 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8964): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_STKERR_Pos" (declared at line 580 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_STKERR_Pos                 (12U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8965): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_STKERR_Msk" (declared at line 581 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_STKERR_Msk                 (0x1U << SCB_CFSR_STKERR_Pos)      /*!< 0x00001000 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8967): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_BFARVALID_Pos" (declared at line 577 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_BFARVALID_Pos              (15U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8968): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_BFARVALID_Msk" (declared at line 578 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_BFARVALID_Msk              (0x1U << SCB_CFSR_BFARVALID_Pos)   /*!< 0x00008000 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8971): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_UNDEFINSTR_Pos" (declared at line 611 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_UNDEFINSTR_Pos             (16U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8972): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_UNDEFINSTR_Msk" (declared at line 612 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_UNDEFINSTR_Msk             (0x1U << SCB_CFSR_UNDEFINSTR_Pos)  /*!< 0x00010000 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8974): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_INVSTATE_Pos" (declared at line 608 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_INVSTATE_Pos               (17U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8975): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_INVSTATE_Msk" (declared at line 609 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_INVSTATE_Msk               (0x1U << SCB_CFSR_INVSTATE_Pos)    /*!< 0x00020000 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8977): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_INVPC_Pos" (declared at line 605 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_INVPC_Pos                  (18U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8978): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_INVPC_Msk" (declared at line 606 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_INVPC_Msk                  (0x1U << SCB_CFSR_INVPC_Pos)       /*!< 0x00040000 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8980): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_NOCP_Pos" (declared at line 602 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_NOCP_Pos                   (19U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8981): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_NOCP_Msk" (declared at line 603 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_NOCP_Msk                   (0x1U << SCB_CFSR_NOCP_Pos)        /*!< 0x00080000 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8983): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_UNALIGNED_Pos" (declared at line 599 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_UNALIGNED_Pos              (24U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8984): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_UNALIGNED_Msk" (declared at line 600 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_UNALIGNED_Msk              (0x1U << SCB_CFSR_UNALIGNED_Pos)   /*!< 0x01000000 */
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8986): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_DIVBYZERO_Pos" (declared at line 596 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_DIVBYZERO_Pos              (25U)                              
+../../../../../../Drivers/CMSIS/Device/ST/STM32L1xx/Include/stm32l152xe.h(8987): warning:  #47-D: incompatible redefinition of macro "SCB_CFSR_DIVBYZERO_Msk" (declared at line 597 of "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include\core_cm3.h")
+  #define SCB_CFSR_DIVBYZERO_Msk              (0x1U << SCB_CFSR_DIVBYZERO_Pos)   /*!< 0x02000000 */
+../Src/main.c(69): warning:  #1295-D: Deprecated declaration asm_setregisters - give arg types
+  extern void asm_setregisters();
+../Src/main.c(70): warning:  #1295-D: Deprecated declaration general_purpose - give arg types
+  void general_purpose();
+../Src/main.c(71): warning:  #1295-D: Deprecated declaration setReg - give arg types
+  void setReg();
+../Src/main.c(72): warning:  #1295-D: Deprecated declaration writeReg - give arg types
+  void writeReg();
+../Src/main.c(73): warning:  #1295-D: Deprecated declaration revive - give arg types
+  void revive();
+../Src/main.c(79): warning:  #1295-D: Deprecated declaration getReg - give arg types
+  uint32_t * getReg();
+../Src/main.c(103): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&bp,sizeof(bp));
+../Src/main.c(104): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&sp,sizeof(sp));
+../Src/main.c(101): warning:  #177-D: variable "prev_bp" was declared but never referenced
+      int prev_bp = bp;
+../Src/main.c(171): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&bp,sizeof(bp));
+../Src/main.c(172): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&sp,sizeof(sp));
+../Src/main.c(189): warning:  #223-D: function "get_R0" declared implicitly
+  		Registers[0] = get_R0();
+../Src/main.c(190): warning:  #223-D: function "get_R1" declared implicitly
+  		Registers[1] = get_R1();
+../Src/main.c(191): warning:  #223-D: function "get_R2" declared implicitly
+  		Registers[2] = get_R2();
+../Src/main.c(192): warning:  #223-D: function "get_R3" declared implicitly
+  		Registers[3] = get_R3();
+../Src/main.c(193): warning:  #223-D: function "get_R4" declared implicitly
+  		Registers[4] = get_R4();
+../Src/main.c(194): warning:  #223-D: function "get_R5" declared implicitly
+  		Registers[5] = get_R5();
+../Src/main.c(195): warning:  #223-D: function "get_R6" declared implicitly
+  		Registers[6] = get_R6();
+../Src/main.c(196): warning:  #223-D: function "get_R7" declared implicitly
+  		Registers[7] = get_R7();
+../Src/main.c(197): warning:  #223-D: function "get_R8" declared implicitly
+  		Registers[8] = get_R8();
+../Src/main.c(198): warning:  #223-D: function "get_R9" declared implicitly
+  		Registers[9] = get_R9();
+../Src/main.c(199): warning:  #223-D: function "get_R10" declared implicitly
+  		Registers[10] = get_R10();
+../Src/main.c(200): warning:  #223-D: function "get_R11" declared implicitly
+  		Registers[11] = get_R11();
+../Src/main.c(201): warning:  #223-D: function "get_R12" declared implicitly
+  		Registers[12] = get_R12();
+../Src/main.c(213): warning:  #167-D: argument of type "volatile uint32_t *" is incompatible with parameter of type "int *"
+  			 mem_map((
+_IO uint32_t*) l,1);
+../Src/main.c(274): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&bp,sizeof(bp));
+../Src/main.c(279): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+          mem_map(&st,sizeof(st));
+../Src/main.c(322): warning:  #167-D: argument of type "volatile uint32_t *" is incompatible with parameter of type "int *"
+  			 mem_map((
+_IO uint32_t*) l,1);
+../Src/main.c(352): warning:  #951-D: return type of function "main" must be "int"
+  void main()
+../Src/main.c(384): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&sp,sizeof(sp));
+../Src/main.c(385): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&bp,sizeof(bp));
+../Src/main.c(386): warning:  #167-D: argument of type "uint32_t *" is incompatible with parameter of type "int *"
+      mem_map(&st,sizeof(st));
+../Src/main.c(433): warning:  #191-D: type qualifier is meaningless on cast type
+      uint32_t addr = (
+_IO uint32_t) curr_addr;
+../Src/main.c(443): warning:  #191-D: type qualifier is meaningless on cast type
+      uint32_t addr = (
+_IO uint32_t) curr_addr;
+../Src/main.c(901): warning:  #1-D: last line of file ends without a newline
+      
+../Src/main.c: 69 warnings, 0 errors
+linking...
+Program Size: Code=19068 RO-data=852 RW-data=120 ZI-data=12072  
+"STM32L152RE_NUCLEO\STM32L152RE_NUCLEO.axf" - 0 Error(s), 56 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.0.0-Beta12.pack
+                ARM::CMSIS:CORE:5.0.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.0.0
+
+<h2>Collection of Component include folders:</h2>
+  C:\Keil_v5\Eg\en.stm32cubel1\STM32Cube_FW_L1_V1.6.0\Projects\STM32L152RE-Nucleo\Examples_MIX\UART\Instrumented  FFT\MDK-ARM\RTE
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta12\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32L1xx_DFP\1.2.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.0.0
+Build Time Elapsed:  00:00:06
+</pre>
+</body>
+</html>

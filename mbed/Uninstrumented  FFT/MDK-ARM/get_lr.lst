@@ -1,0 +1,46 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             asm_func, CODE, READONLY
+    2 00000000         ; Export my_asm function location so that C compiler can
+                        find it and link
+    3 00000000                 EXPORT           get_LR
+    4 00000000         get_LR
+    5 00000000 4670            MOV              R0,LR
+    6 00000002 4770            BX               LR
+    7 00000004                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=stm32l152re_nucleo\get_lr.d -ostm32l152re_nucleo\get_lr.o -I"C:\Ke
+il_v5\Eg\en.stm32cubel1\STM32Cube_FW_L1_V1.6.0\Projects\STM32L152RE-Nucleo\Exam
+ples_MIX\UART\Instrumented  FFT\MDK-ARM\RTE" -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.
+0.0-Beta12\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L1xx_DFP\1.2.0\Device\
+Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine
+="__UVISION_VERSION SETA 521" --predefine="_RTE_ SETA 1" --predefine="STM32L152
+xE SETA 1" --list=get_lr.lst get_LR.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+asm_func 00000000
+
+Symbol: asm_func
+   Definitions
+      At line 1 in file get_LR.s
+   Uses
+      None
+Comment: asm_func unused
+get_LR 00000000
+
+Symbol: get_LR
+   Definitions
+      At line 4 in file get_LR.s
+   Uses
+      At line 3 in file get_LR.s
+Comment: get_LR used once
+2 symbols
+337 symbols in table
