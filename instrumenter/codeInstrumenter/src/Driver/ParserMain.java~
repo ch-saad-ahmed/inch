@@ -24,13 +24,13 @@ public class ParserMain {
 	public static transient String tempFilePath = basePath + application + "/build/telosb/app1.c";
 	
 	public static void main(String[] args) throws IOException {
-//		if (args.length != 2){
-//			System.out.println("Invalid Number of Arguments. Translator Quitting.");
-//			return;
-//		}
-//
-//		String inputFilePath = args[0];
-//		String tempFilePath =  args[1];
+		if (args.length != 2){
+			System.out.println("Invalid Number of Arguments. Translator Quitting.");
+			return;
+		}
+
+		String inputFilePath = args[0];
+		String tempFilePath =  args[1];
 
 		PrintWriter pw = new PrintWriter(tempFilePath);
 		CharStream chStream = new ANTLRFileStream(inputFilePath);

@@ -1,3 +1,4 @@
+
 grammar C;
 
 
@@ -5,13 +6,11 @@ grammar C;
 package Driver;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.*;
 }
 
 @parser::members{
 
-public class Variable{
+private class Variable{
 	public String varName;
 	public String type;
 };
@@ -22,17 +21,22 @@ public enum DataType {
 public int sizeOfList[] ={1,2,4,8,4,1,2,8};
 
 public TokenStreamRewriter tokens;
-public String codeString="\n\t__asm(  \" mov.w  r1, %0\\n\":\"=r\"(mycomp__basePointerCurrent));\n\tif(mycomp__stackTracker < mycomp__basePointerCurrent)\n{\n mycomp__stackTracker=mycomp__basePointerCurrent;\n}\n\t";//\n\tint bp=0;\n \tasm(  "mov.w  r4, %0\n":"=r"(bp));
+public String codeString="\n\t__asm(  \" mov.w  r1, %0\\n\":\"=r\"(mycomp__basePointerCurrent));\n\tif(mycomp__stackTracker < mycomp__basePointerCurrent)\n{\n mycomp__stackTracker=mycomp__basePointerCurrent;\n}\n\t";
 
 public HashMap<String,Integer> map =new HashMap();
 public HashMap<String,Integer> dataTypeSizes =new HashMap();
 
+public int global_vars_size=0;
+public int GlobalArrayIndexCount=0;
 public int itrStartIndex=-1;
+public int itrEndIndex=-1;
 public int ifStartIndex=-1;
 public int statementStartIndex=-1;
+public int compStatmentStartIndex=-1;
 public Boolean global=false;
 public Boolean declarationFlag=false;
 public Boolean iterationFlag=false;
+public Boolean iterationConditionFlag=false;
 public Boolean ifFlag=false;
 public Boolean compoundStatFlag=false;
 public String currFunctionName="";
@@ -44,29 +48,22 @@ public Boolean typedefFlag =false;
 public int no_of_call_added=0;
 public Boolean funcDeclaration=false;
 
-public String rootFunction = "";
-public HashMap<String,String> funcMap =new HashMap();
-public HashMap<String,LinkedList<String>> treeFuncMap =new HashMap();
-public HashMap<String,LinkedList<String>> FuncToVarMap =new HashMap();
-public HashMap<Integer,ArrayList<Integer>> BitwiseFuncToVarMap =new HashMap();
-public Boolean rootFuncIndicator = false;
-public int countOfFunction=0;
-
-
 
 public String saveVariableFunction = "mycomp__myinterface__updateBackupList" ;
 public String ignoreFunctionList = "updateFRAMWithBackupList,myFunc,sendRamImage,saveRam,updateBackupList,updateBackupListFRAM,saveRegisters,debugVals,bootCheckUpdate,verifyCheckpoint,myFuncCaller,saveRamCaller,updateBackupListFRAMCaller,updateBackupListFRAM,myFuncCaller,addToBackupList,updateBackupListFRAMCaller,debugValsCaller,bootCheckUpdateCaller,verifyCheckpointCaller,spMagic,dram,spMagicCaller,dumpRamCaller,dumpRAM,sendAddrMsg,sendDone,"+
-									"data__makeOutput,SCK__set,SCK__clr,mycomp___8bitRead,_8bitRead,mycomp___8bitWrite,mycomp__write,mycomp___8bitRead1,mycomp___read1,mycomp___read";//+//Israr code 
-
+									"data__makeOutput,SCK__set,SCK__clr,mycomp___8bitRead,_8bitRead,mycomp___8bitWrite,mycomp__write,mycomp___8bitRead1,mycomp___read1,mycomp___read"+
+									"HplMsp430Usart1P__Usart__tx,MotePlatformC__Init__init,Msp430ClockP__Msp430ClockInit__defaultInitClocks,Msp430ClockP__Msp430ClockInit__defaultInitTimerB,Msp430ClockP__startTimerA,Msp430ClockP__test_calib_busywait_delta,HplAdc12P__HplAdc12__startConversion,Msp430ClockP__test_calib_busywait_delta,ArbiterP__0__Resource__release,SerialP__RunTx__runTask,AMQueueImplP__0__CancelTask__runTask,Msp430Adc12ImplP__SingleChannel__configureMultiple,HplAdc12P__HplAdc12__setIEFlags,HplAdc12P__HplAdc12__setCtl0,AdcStreamP__nextAlarm,Msp430RefVoltGeneratorP__SwitchOnTimer__fired,SerialP__rxInit";
+									
 ArrayList<String> notInlineFunctions= new ArrayList();
 ArrayList<Variable> global_pointers= new ArrayList();
 ArrayList <Variable> global_variables = new ArrayList();
-static ArrayList<String> functions = new ArrayList();
+
 public String [] list=ignoreFunctionList.split(",");
  
 private void fillDataTypeSizes(){
 	
 	dataTypeSizes.put("uint8_t",1);
+	dataTypeSizes.put("int8_t",1);
 	dataTypeSizes.put("uint16_t",2);
 	dataTypeSizes.put("uint32_t",4);
 	dataTypeSizes.put("bool",1);
@@ -81,6 +78,7 @@ private void fillDataTypeSizes(){
 	dataTypeSizes.put("TransformAlarmC__1__to_size_type",4);
 	dataTypeSizes.put("AMQueueImplP__0__queue_entry_t",8);
 	dataTypeSizes.put("SerialP__rx_buf_t",5);
+	dataTypeSizes.put("SerialP__tx_buf_t",2);
 	dataTypeSizes.put("SerialP__ack_queue_t",8);
 	dataTypeSizes.put("SerialDispatcherP__0__recv_state_t",1);
 	dataTypeSizes.put("SerialDispatcherP__0__send_state_t",4);
@@ -89,23 +87,40 @@ private void fillDataTypeSizes(){
 	dataTypeSizes.put("Stm25pBlockP__stm25p_block_state_t",24);
 	dataTypeSizes.put("HdlcTranslateC__HdlcState",1);
 	dataTypeSizes.put("message_t",52);
-	
 	dataTypeSizes.put("error_t",1);
 	dataTypeSizes.put("stm25p_addr_t",4);
 	dataTypeSizes.put("stm25p_len_t",4);
 	dataTypeSizes.put("stm25p_volume_info_t",2);
+	dataTypeSizes.put("QueueC__0__queue_t",1);
+	dataTypeSizes.put("uart_id_t",1);
+	dataTypeSizes.put("TransformAlarmC__0__to_size_type",4);
+	dataTypeSizes.put("BigQueueC__0__queue_t",1);
+	dataTypeSizes.put("route_key_t",2);
+	dataTypeSizes.put("PoolP__4__pool_t",8);
+	dataTypeSizes.put("QueueC__1__queue_t",8);
+	dataTypeSizes.put("PoolP__3__pool_t",8);
+	dataTypeSizes.put("PoolP__2__pool_t",5);
+	dataTypeSizes.put("send_entry",57);
+	dataTypeSizes.put("PoolP__0__pool_t",57);
+	dataTypeSizes.put("table_t",4);
+	dataTypeSizes.put("ip_statistics_t",9);
+	dataTypeSizes.put("downwards_table_t",6);
+	dataTypeSizes.put("am_group_t",1);
+	dataTypeSizes.put("am_addr_t",2);
+	dataTypeSizes.put("TransformCounterC__1__upper_count_type",2);
+	dataTypeSizes.put("CC2420ControlP__cc2420_control_state_t",2);
+	dataTypeSizes.put("CC2420TransmitP__cc2420_transmit_state_t",4);
+	dataTypeSizes.put("SendVirtualizerP__0__queue_entry_t",4);
+	dataTypeSizes.put("ieee_eui64_t",8);
+	dataTypeSizes.put("ieee154_panid_t",2);
+	dataTypeSizes.put("ieee154_saddr_t",2);
+	dataTypeSizes.put("parent_t",55);
+	dataTypeSizes.put("int16_t",2);
+	dataTypeSizes.put("AMQueueImplP__1__queue_entry_t",2);
+	dataTypeSizes.put("dallasid48_serial_t",8);
 	
 }
-private Integer getDatatypeSize(String dataType){
-	Integer size;
-	size=dataTypeSizes.get(dataType);
-	if(size == null){
-		size=2;
-	}
-	
-	return size;
-	
-}
+
 private Boolean VariableDeclaration(String declString){
 	if(declString!="" && !declString.contains("inline") && !declString.contains("union") && !declString.contains("struct") && !declString.contains("typedef") && !declString.contains("enum")){
 		return true;			
@@ -115,6 +130,9 @@ private Boolean VariableDeclaration(String declString){
 }
 
 private Boolean globalVariableExists(Variable var){
+	if(var == null)
+		return true; // do not add variable 
+		 
 		for(Variable globvar : global_variables){
 				if(globvar.varName.equals(var.varName)){
 					return true;
@@ -153,9 +171,11 @@ private Variable checkIfGlobalPointer(String varName){
 
 private Variable checkIfGlobalVariable(String variableName){
 		Variable res=null;
+		variableName = variableName.replace("*","");
 		variableName = variableName.trim();
 		for(Variable var : global_variables){
 			String global_varName=var.varName.trim();
+			global_varName=global_varName.replace("*","");
 			if(global_varName.equals(variableName) || global_varName.equals(variableName.split("\\[")[0])){
 				String funcName[]= currFunctionName.split("__");
 				if(isInFunction && !ignoreFunctionList.contains(funcName[funcName.length-1]))
@@ -167,29 +187,65 @@ private Variable checkIfGlobalVariable(String variableName){
 		}
 		return res;
 }
-
-private void printAllVariables(){
-	for(Variable var : global_variables){
-		System.out.println(var.type+", "+var.varName);
+private Integer getDatatypeSize(String dataType){
+	Integer size;
+	size=dataTypeSizes.get(dataType);
+	if(size == null){
+		size=-1;// make it 2. default size of int
 	}
+	
+	return size;
+	
+}
+private void printAllVariables(){
+	global_vars_size=0;
+	Integer size=0;
+
+	for(Variable var : global_variables){
+		if(var.type == null){
+			System.out.println(var.varName+" Size not found");
+		}else{
+			size=getDatatypeSize(var.type);	
+		}
+		global_vars_size=global_vars_size+size;
+		if(size != -1){
+			System.out.println(var.type+", "+var.varName);
+		}
+		else{
+			System.out.println(var.type+", "+var.varName+" Size not found");
+		}
+	}
+	
+	System.out.println("GV size in bytes: "+global_vars_size);
 	System.out.println("Global Pointers Size = "+global_pointers.size());
 	for(Variable var : global_pointers){
 		System.out.println(var.type+", "+var.varName);
 	}
 } 
+
 }
+
+
 
 start
 @init{
 	fillDataTypeSizes();	
 }
+
+@after{
+  	 printAllVariables();
+	 System.out.println("Global Variables Size = "+global_variables.size());
+	 System.out.println("Global Pointers Size = "+global_pointers.size());
+	 System.out.println("Not Inline Functions: "+notInlineFunctions.size()+"\n");
+	 System.out.println("Calls Added: "+no_of_call_added+"\n");
+}
 	:
 	( 
-	{isInFunction=true;} 
-	fd=functionDefinition
+	  {isInFunction=true;} 
+	  fd=functionDefinition
 	|
-	{global=true;} 
-	dec=declaration // contains var declaraTion 
+	  {global=true;} 
+	  dec=declaration // contains var declaraTion 
 	| structDeclaration // contains enum and structs
 	| externalDeclaration
 	| bi=blockItem
@@ -229,14 +285,17 @@ postfixExpression returns [String str]
     :   primaryExpression {$str=$primaryExpression.str;}
     | 
      pe=postfixExpression 
-     '[' exp=expression ']'     
+     '[' exp=expression ']'  {
+     	$str=$pe.str;
+     }   
     
     | peF=postfixExpression '(' expF=argumentExpressionList? rparen=')'
-      {	
+      {	 
       	if(checkIfNotInline($peF.str)){
       		int semiColonIndex =((PostfixExpressionContext)_localctx).rparen.getTokenIndex()+1; 
       		if(_input.get(semiColonIndex).getText().equals(";")){
       			int insertIndex =((PostfixExpressionContext)_localctx).rparen.getTokenIndex()+2;
+      				//tokens.insertBefore(insertIndex,codeString);	
       		}      		
       	}
       }
@@ -248,40 +307,56 @@ postfixExpression returns [String str]
     	String var =$str;
 		Variable global_var = null;
    		if(var!=null)
-			global_var = checkIfGlobalPointer(var.toString());
-
+			global_var = checkIfGlobalVariable(var.toString());
+		
 		if(global_var != null){
-	    	
 	    	if(!iterationFlag){
+	    		tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 				no_of_call_added++;	
 			}
 			else
 			{
 				if(map.get(var)==null || !map.get(var).equals(itrStartIndex)){
 					map.put(var,itrStartIndex);
+					tokens.insertBefore(itrStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 				}
+				 no_of_call_added++;	
+					
+//				if(map.get(var)==null || !map.get(var).equals(statementStartIndex)){
+//					map.put(var,statementStartIndex);
+//					tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
+//					no_of_call_added++;
+//				}
 			}
 		}
     } 
-    | expr2=postfixExpression '--'
+    |
+    expr2=postfixExpression '--'
     {
     	$str=$expr2.str;
     	String var =$str;
 		Variable global_var = null;
    		if(var!=null)
-			global_var = checkIfGlobalPointer(var.toString());
-			
+			global_var = checkIfGlobalVariable(var.toString());
+		
 		if(global_var != null){
 	    	if(!iterationFlag)
 	    	{
+	    		tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 				no_of_call_added++;	
 			}	
 	    	else
 			{
 				if(map.get(var)==null || !map.get(var).equals(itrStartIndex)){
 					map.put(var,itrStartIndex);
+					tokens.insertBefore(itrStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 					no_of_call_added++;	
 				}
+//				if(map.get(var)==null || !map.get(var).equals(statementStartIndex)){
+//					map.put(var,statementStartIndex);
+//					tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
+//					no_of_call_added++;
+//				}
 			}
 		}
     }
@@ -303,18 +378,25 @@ unaryExpression returns [String str]
     	String var =$str;
     	Variable global_var = null;
    		if(var!=null)
-			global_var = checkIfGlobalPointer(var.toString());
-			
+			global_var = checkIfGlobalVariable(var.toString());
+		
 		if(global_var != null){
 	    	if(!iterationFlag){
+	    		tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 				no_of_call_added++;	
 		   	}
 			else
 			{
 				if(map.get(var)==null || !map.get(var).equals(itrStartIndex)){
 					map.put(var,itrStartIndex);
+					tokens.insertBefore(itrStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 					no_of_call_added++;	
 		   		}
+//				if(map.get(var)==null || !map.get(var).equals(statementStartIndex)){
+//					map.put(var,statementStartIndex);
+//					tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
+//					no_of_call_added++;
+//				}
 			}
 		}
     }
@@ -324,18 +406,26 @@ unaryExpression returns [String str]
 	   	String var =$str;
 	   	Variable global_var = null;
    		if(var!=null)
-			global_var = checkIfGlobalPointer(var.toString());
-			
+			global_var = checkIfGlobalVariable(var.toString());
+		
     	if(global_var != null){
 		   	if(!iterationFlag){
+		   		tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 				no_of_call_added++;	
 		   	}
 			else
 			{
 				if(map.get(var)==null || !map.get(var).equals(itrStartIndex)){
 					map.put(var,itrStartIndex);
+					tokens.insertBefore(itrStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 					no_of_call_added++;
 				}
+
+//				if(map.get(var)==null || !map.get(var).equals(statementStartIndex)){
+//					map.put(var,statementStartIndex);
+//					tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void kk*)&"+var+","+getDatatypeSize(global_var.type)+");\n");
+//					no_of_call_added++;
+//				}
 			}
 		}
     }
@@ -419,15 +509,13 @@ conditionalExpression returns [String str]
     ;
 
 assignmentExpression returns [String str]
-@after{
-	//postFixCaseIndex=-1;
-}
     :   cond=conditionalExpression {
     	$str=$cond.str;
     	String var=$cond.str;
     	if(var!=null){
-    			if(var.contains("->")){// it can also be global variable which is a pointer
+    			if(var.contains("->")){
 					var=var.split("->")[0];
+
 				}
    				//check if points to global variable
    				Variable global_var = null;
@@ -442,19 +530,43 @@ assignmentExpression returns [String str]
     }
     |   leftOp=unaryExpression opr=assignmentOperator rightOp=assignmentExpression{
     	String var=(((AssignmentExpressionContext)_localctx).leftOp!=null?_input.getText(((AssignmentExpressionContext)_localctx).leftOp.start,((AssignmentExpressionContext)_localctx).leftOp.stop):null);
+		
 		Variable global_var = null;
-		if(var!=null)
+		if(var!=null){
+			if(var.contains("->")){// it can also be global variable which is a pointer
+					var=var.split("->")[0];
+				}
 			global_var = checkIfGlobalVariable(var.trim());
-			
+		}	 
 		if(global_var != null ){
 			if(!iterationFlag){
+			 	tokens.insertBefore(statementStartIndex,""+saveVariableFunction+"((void *)&"+(((AssignmentExpressionContext)_localctx).leftOp!=null?_input.getText(((AssignmentExpressionContext)_localctx).leftOp.start,((AssignmentExpressionContext)_localctx).leftOp.stop):null)+","+getDatatypeSize(global_var.type)+");\n");
 				no_of_call_added++;
 			}			
 			else{
 				if(map.get(var)==null || !map.get(var).equals(itrStartIndex)){
 					map.put(var,itrStartIndex);
+					if(var.contains("++]")){
+						var=var.replace("++","");
+					}
+					else if (var.contains("--]")){
+						var=var.replace("--","");
+					}
+					tokens.insertBefore(itrStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
 					no_of_call_added++;
 				}
+		
+//				if(map.get(var)==null || !map.get(var).equals(statementStartIndex)){
+//					map.put(var,statementStartIndex);
+//					if(var.contains("++]")){
+//						var=var.replace("++","");
+//					}
+//					else if (var.contains("--]")){
+//						var=var.replace("--","");
+//					}
+//					tokens.insertBefore(statementStartIndex,saveVariableFunction+"((void *)&"+var+","+getDatatypeSize(global_var.type)+");\n");
+//					no_of_call_added++;
+//				}
 			}
 		}
 		else{
@@ -464,6 +576,7 @@ assignmentExpression returns [String str]
 				}
 				global_var = checkIfGlobalPointer(var.trim()); 
 				if(var !=null && global_var != null ){
+					tokens.insertBefore(((AssignmentExpressionContext)_localctx).leftOp.start.getTokenIndex(),""+saveVariableFunction+"((void *)&"+(((AssignmentExpressionContext)_localctx).leftOp!=null?_input.getText(((AssignmentExpressionContext)_localctx).leftOp.start,((AssignmentExpressionContext)_localctx).leftOp.stop):null)+","+getDatatypeSize(global_var.type)+");\n");
 					no_of_call_added++;	
 				}
 		}
@@ -498,17 +611,9 @@ declaration
 }
     :   specifier=declarationSpecifiers var=initDeclaratorList? semi=';' 
     {
-    		if(($specifier.text!= null)&&functions.contains($specifier.text)){
-    		rootFunction=rootFunction+" "+$specifier.text;
-    	}
     	if(global && funcDeclaration && ((DeclarationContext)_localctx).var != null){
     			String specifierText= $specifier.text;
     			String functionName= $var.str;
-    			currFunctionName=functionName;
-	    	    functions.add(currFunctionName);
-	    	
-    	
-    			countOfFunction++;
     			if(!typedefFlag && !specifierText.contains("inline") && !notInlineFunctions.contains(functionName)){
     				notInlineFunctions.add(functionName);
 		    }
@@ -527,9 +632,9 @@ declaration
 	    	var.varName=lhOp.trim();
 	    	var.type=varType;
     		Variable global_var = checkIfGlobalVariable(rhVarName);
-			if(!globalPointerExists(var) &&  global_var != null && rhOp.charAt(0)=='&'){
+    		if(!globalPointerExists(var) &&  global_var != null && rhOp.charAt(0)=='&'){
 	    		global_pointers.add(var);	
-			}
+		}
     	}
     	if(declarationFlag)
     	{
@@ -550,7 +655,8 @@ declaration
     			shortRes=$specifier.text;
     		}
 
-    		if(decl!="" && !decl.contains("inline") && !decl.contains("union") && !decl.contains("struct") && !decl.contains("typedef") && !decl.contains("enum")){
+/* FIX ME : && !decl.contains("const") */
+    		if(decl!="" && !decl.contains("inline")  && !decl.contains("union") && !decl.contains("struct") && !decl.contains("typedef") && !decl.contains("enum")){
     			
     			String type = $specifier.text;
     			if(((DeclarationContext)_localctx).var != null){
@@ -559,26 +665,35 @@ declaration
     			String [] var_splits = varName.split("=");
     			new_var.varName=var_splits[0].split("\\[")[0].split(" ",1)[0];
     				
-    			if(new_var.varName.contains("*")){
- 		   			new_var.varName=new_var.varName.replace(" ","");    			
-    			}
-    			else{
-    				new_var.varName=var_splits[0].split("\\[")[0].split(" ")[0];
-    			}
+	    			if(new_var.varName.contains("*")){
+	 		   			new_var.varName=new_var.varName.replace(" ","");    			
+	    			}
+	    			else{
+	    				new_var.varName=var_splits[0];
+	    			}
     			String [] type_splits=type.split(" ");
 	    		new_var.type=type_splits[type_splits.length-1];
     			}
     			else{
+    			type=type.replace("'/*'(.)* '*/'","");
     			String [] type_splits=type.split("\\s+");
-	    		new_var.type=type_splits[0];
-	    		new_var.varName=type_splits[1].replace("'/*'(.)* '*/'","");	
+    			if(type_splits.length <= 1){
+    			    new_var = null;
+    			}
+    			else{
+    			new_var.type=type_splits[type_splits.length-2];
+	    		new_var.varName=type_splits[type_splits.length-1];	
+    			}
+	    		
     			}	    		
-	    		if( new_var.type.equalsIgnoreCase("bool")&& !funcDeclaration){
+	    		if( new_var != null && new_var.type.equalsIgnoreCase("bool")&& !funcDeclaration){
 	    			tokens.replace(((DeclarationContext)_localctx).specifier.start.getTokenIndex(),"int");
 	    		}
-	    		if (!globalVariableExists(new_var)){
+	    		
+	    		if (new_var != null && !globalVariableExists(new_var)){
 	    			global_variables.add(new_var);
 	    		}
+	    			    		
 	    	}
     	}
     }	   
@@ -586,9 +701,7 @@ declaration
     ;
 
 declarationSpecifiers returns [String str]
-    :   (spec=declarationSpecifier {
-    	$str=$spec.text;
-    })+
+    :   (spec=declarationSpecifier)+
     ;
 
 declarationSpecifiers2
@@ -703,6 +816,7 @@ structDeclarator
     		String val=$constexp.text;
     		int varSize=Integer.parseInt(val);
     		if(varSize == 1){
+    			//tokens.replace(((StructDeclaratorContext)_localctx).colon.start.getTokenIndex(),"4");
     			int start=((StructDeclaratorContext)_localctx).colon.getTokenIndex();
 				int end=((StructDeclaratorContext)_localctx).constexp.start.getTokenIndex();
 				tokens.delete(start, end);
@@ -773,22 +887,20 @@ directDeclarator returns [String str, int res]
     |   directDeclarator '[' typeQualifierList 'static' assignmentExpression ']'{$res=3;}
     |   directDeclarator '[' typeQualifierList? '*' ']'{$res=3;}
     |   dir1=directDeclarator '(' parameterTypeList ')' {
+    	// function declaration
     	$str=$dir1.str;
     	$res=1;
-    	
     	if(isInFunction){
 	    	currFunctionName=$dir1.str;
-	    	functions.add(currFunctionName);
-	    	}
+    	}
     	if(!isInFunction)
     		funcDeclaration=true;
     }
     |   dir2=directDeclarator '(' identifierList? ')'{
     	
+    	// function declaration
     	if(isInFunction){
 	    	currFunctionName=$dir2.str;
-	    	functions.add(currFunctionName);
-	    	
     	}
     	if(!isInFunction)
     		funcDeclaration=true;
@@ -912,10 +1024,9 @@ staticAssertDeclaration
     ;
 
 statement[String counter]
-@after{
-	//inlineFlag =false;
-	
-}
+@init{
+	statementStartIndex=((StatementContext)_localctx).start.getTokenIndex();
+} 
     :   labeledStatement
     |
     {
@@ -924,8 +1035,7 @@ statement[String counter]
      compoundStatement [$counter]
      {
      	compoundStatFlag=false;
-     }
-     
+     }     
     |
        expstat=expressionStatement
      {	
@@ -947,7 +1057,10 @@ labeledStatement
     ;
 
 compoundStatement[String counter]
-    :   rightParen='{' blockItemList? '}'
+@after{
+	compStatmentStartIndex = -1;	
+}
+    :   rightParen='{' blockItemList? endBrac='}'
    
     ;
 
@@ -969,6 +1082,7 @@ blockItem
     	structDecFlag=false;
     	funcDeclaration=false;
     }
+    
     |   statement[null]
     ;
 
@@ -988,19 +1102,55 @@ selectionStatement
     { 	ifFlag=false; }
     |   'switch' '(' expression ')' statement[null]
     ;
+
 iterationStatement
 @init{
 		iterationFlag=true;
 		itrStartIndex=((IterationStatementContext)_localctx).start.getTokenIndex();
+
 }
 @after{
 		iterationFlag=false;
 		itrStartIndex=-1;
 }
-    :   startLabel='while' '(' c1=expression ')' statement[null] 
-    |   startLabel='do' statement[null]  'while' '(' c2 = expression ')' ';' 
-    |	startLabel='for' '(' e1=expression? ';' e2=expression? ';' c3 = expression? ')' statement[null]
-    |   startLabel='for' '(' declaration  expression? ';' c4=expression? ')' statement[null]
+    :   startLabel='while' 
+    {
+    	iterationConditionFlag=true;
+    }
+    '(' c1=expression ')' 
+    {
+    	iterationConditionFlag=false;
+    }
+    statement[null] 
+    |   startLabel='do' sta=statement[null]  'while'
+     {
+    	iterationConditionFlag=true;
+    	itrEndIndex = ((IterationStatementContext)_localctx).sta.stop.getTokenIndex();
+    	
+    }
+     '(' c2 = expression ')'
+    {
+    	iterationConditionFlag=false;
+    }
+      ';' 
+    |	startLabel='for' 
+    {
+    	iterationConditionFlag=true;
+    }
+    '(' e1=expression? ';' e2=expression? ';' c3 = expression? ')'
+    {
+    	iterationConditionFlag=false;
+    }
+     statement[null]
+    |   startLabel='for' 
+    {
+    	iterationConditionFlag=true;
+    }
+    '(' declaration  expression? ';' c4=expression? ')' 
+    {
+    	iterationConditionFlag=false;
+    }
+    statement[null]
     ;
 
 
@@ -1030,25 +1180,15 @@ externalDeclaration
 functionDefinition 
 @init{
 	isInFunction=true;
-	//System.out.printnln(functionDefinition.text);
 }
-
 @after{
-	//System.out.println("Current Function after definition: "+ currFunctionName+" Root Function after definition"+rootFunction);
-	funcMap.put(currFunctionName, rootFunction);
-	rootFunction = "";
 	currFunctionName="";
 	isInFunction=false;
 }
     :   (gccAttributeSpecifier)* spec=declarationSpecifiers? dec=declarator declarationList? compStat=compoundStatement[null]{
     	String specifier=$spec.text;
-    	//System.out.println("spec "+$spec.str);
-    	//System.out.println("dec "+$dec.str);
-    	currFunctionName = $dec.str;
-    	//System.out.println("compStat "+$compStat.text);
     		if(!typedefFlag && !specifier.contains("inline") && !notInlineFunctions.contains($dec.str)){
     			notInlineFunctions.add($dec.str);
-    			
     }
     typedefFlag=false;
     }
@@ -1407,10 +1547,6 @@ LineDirective
     :   '#' Whitespace? DecimalConstant Whitespace? StringLiteral ~[\r\n]*
         -> skip
     ;
-/* Ignore these lines from code */
-//IgnoreASM    :'__asm ("mov.w  r1, %0\n" : "=r"(arr[1]));'(.)*'__asm ("mov.w  r0, %0\n" : "=r"(arr[0]));' 
- //		-> channel(HIDDEN)
-   // ;
 
 PragmaDirective
     :   '#' Whitespace? 'pragma' Whitespace ~[\r\n]*
@@ -1449,3 +1585,5 @@ LINE_COMMAND
      |'#' WS* ([0-9]+) '"'(.)*?'"' ~('\n'|'\r')* '\r'? '\n'
     ) -> skip
     ;
+Ignore: '\\n'->skip;
+    
